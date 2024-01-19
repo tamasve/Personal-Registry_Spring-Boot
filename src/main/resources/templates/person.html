@@ -30,13 +30,12 @@
                                 <option th:each="pers : ${persons}"
                                                     th:text="${pers.idCard}"
                                                     th:value="${pers.id}"
-                                                    selected="${pers.idCard == person.idCard} ? 'selected' : ''">673456KL</option>
+                                                    th:selected="${pers.idCard == person.idCard} ?: 'selected'  ">673456KL</option>
                             </select>
                             <button type="submit" class="formButton">Select other person</button>
                         </form>
                     </p>
 
-<!--                    <p> <a th:href="@{/persons/new}">➕</a> </p>-->
 
                 </article>
 
@@ -50,13 +49,13 @@
                         <div class="header-cell">Házszám</div>
                     </section>
 
-                    <!-- 1 row for adding a new apartment =a FORM with 1 apartment object -->
-<!--                    <form th:if="${newRow}" class="new-row" th:action="@{/apartments/add}" method="post" th:object="${obj}">-->
+                    <!-- 1 row for adding a new address =a FORM with 1 address object -->
+<!--                    <form th:if="${newRow}" class="new-row" th:action="@{/addresses/add}" method="post" th:object="${obj}">-->
 <!--                        <div>️<button type="submit">➕</button></div>-->
-<!--                        <div><input type="text" name="shortId" th:field="*{shortId}" /></div>-->
+<!--                        <div><input type="text" name="postalCode" th:field="*{postalCode}" /></div>-->
+<!--                        <div><input type="text" name="city" th:field="*{city}" /></div>-->
+<!--                        <div><input type="text" name="place" th:field="*{place}" /></div>-->
 <!--                        <div><input type="text" name="number" th:field="*{number}" /></div>-->
-<!--                        <div><input type="text" name="persons" th:field="*{persons}" /></div>-->
-<!--                        <div><input type="text" name="squaremeter" th:field="*{squaremeter}" /></div>-->
 <!--                    </form>-->
 
                     <!-- A row for each apartment object -->

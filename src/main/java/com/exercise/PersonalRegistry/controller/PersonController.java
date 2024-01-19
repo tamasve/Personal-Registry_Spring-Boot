@@ -1,27 +1,47 @@
 package com.exercise.PersonalRegistry.controller;
 
-import com.exercise.PersonalRegistry.entity.Person;
-import com.exercise.PersonalRegistry.service.PersonService;
+import com.exercise.PersonalRegistry.entity.*;
+import com.exercise.PersonalRegistry.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class PersonController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private Person selectedPerson;
+    // for filling a new Person
+    private Person newPerson;
+    private List<Address> newAddresses;
+    private List<Contact> newContacts1, newContacts2;
 
     PersonService personService;
+    AddressService addressService;
+    AddressTypeService addressTypeService;
+    ContactService contactService;
+    ContactTypeService contactTypeService;
     @Autowired
-    public PersonController(PersonService personService) {
+    public PersonController(
+                PersonService personService,
+                AddressService addressService,
+                AddressTypeService addressTypeService,
+                ContactService contactService,
+                ContactTypeService contactTypeService) {
         this.personService = personService;
-        selectedPerson = personService.findById(1L);
+        this.addressService = addressService;
+        this.addressTypeService = addressTypeService;
+        this.contactService = contactService;
+        this.contactTypeService = contactTypeService;
     }
 
     @GetMapping("/")
@@ -32,7 +52,6 @@ public class PersonController {
     @GetMapping("/persons")
     public String persons(Model model) {
         model.addAttribute("persons", personService.findAll());
-        log.info(personService.findAll().get(0).getAddresses().get(0).getCity());
         return "persons";
     }
 
@@ -63,7 +82,34 @@ public class PersonController {
     }
 
     @GetMapping("/new-person")
-    public String newPerson() {
+    public String newPerson(Model model) {
+
+        newPerson = new Person();
+        newAddresses = new ArrayList<>();
+        newContacts1 = new ArrayList<>();
+        newContacts2 = new ArrayList<>();
+
+        for (AddressType addressType : addressTypeService.findAll()) {
+            newAddresses.add(new Address(null, addressType, 0, "", "", 0));
+        }
+        for (ContactType contactType : contactTypeService.findAll()) {
+            newContacts1.add(new Contact(null, contactType, ""));
+            newContacts2.add(new Contact(null, contactType, ""));
+        }
+        model.addAttribute("person", newPerson);
+        model.addAttribute("addresses", newAddresses);
+        model.addAttribute("contacts1", newContacts1);
+        model.addAttribute("contacts2", newContacts2);
+        return "newperson";
+    }
+
+    @PostMapping("/new-person/save")
+    public String savePerson(@ModelAttribute("person") Person person,
+                                    @ModelAttribute("addresses") List<Address> addresses,
+                                    @ModelAttribute("contacts1") List<Contact> contacts1,
+                                    @ModelAttribute("contacts2") List<Contact> contacts2) {
+        log.info(person.getLastName());
+        log.info(addresses.get(0).getCity());
         return "home";
     }
 

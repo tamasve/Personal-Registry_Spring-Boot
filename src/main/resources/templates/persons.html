@@ -27,7 +27,7 @@
                     <section class="scroll">
 
                         <section class="row" th:each="person : ${persons}">
-                            <div><a th:href="@{/persons/select/{id}(id=${person.id})}">✅</a></div>
+                            <div><a th:href="@{/persons/select/{id}(id=${person.idCard})}">✅</a></div>
                             <div th:text="${person.firstName}">Tom</div>
                             <div  th:text="${person.lastName}">Sawyer</div>
                             <div  th:text="${person.idCard}">458734KL</div>
