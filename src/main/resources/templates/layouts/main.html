@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Personal Registry</title>
+    <link rel="stylesheet" href="../../static/css/main.css" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+    <main>
+
+        <section class="menu">
+            <h2>MENU</h2>
+            <div><p></p><p></p></div>
+            <div><a th:href="@{/persons}"><p>🤵🤵🤵</p><p>Persons</p></a></div>
+            <div><a th:href="@{/person}"><p>🙋‍♂️</p><p>A person</p></a></div>
+            <div><a th:href="@{/new-person}"><p>🧑🏻‍🦰</p><p>New person</p></a></div>
+            <div><p></p><p></p></div>
+            <div><a th:href="@{/contact-types}"><p>📞🧾</p><p>Contact types</p></a></div>
+            <div><p></p><p></p></div>
+        </section>
+
+        <section class="report">
+
+            <div layout:fragment="content"></div>
+
+        </section>
+    </main>
+</body>
+
+</html>

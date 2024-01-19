@@ -1,0 +1,195 @@
+:root {
+    font-size: 2vh;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 95vh;
+    font-family: 'Franklin Gothic Medium';
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+a {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.menu {
+    flex: 1;
+    height: 95vh;
+    padding: 1em;
+    background-color: rgb(69, 72, 104);
+    color: whitesmoke
+}
+
+.menu div {
+    margin-bottom: 1em;
+}
+
+.menu div p {
+    display: inline;
+    margin-left: 1em;
+}
+
+.report {
+    flex: 5;
+}
+
+.container {
+    background-color: rgb(193, 196, 228);
+    padding: 2em;
+}
+
+.data {
+    height: 77vh;
+    margin: 0 1em;
+    padding: 1em;
+    background-color: white;
+    box-shadow: 0 2px 10px 2px gray;
+}
+
+h2 {
+    margin-left: 2em;
+}
+
+.title {
+    border-bottom: 2px solid black;
+}
+
+.persons-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-left: 10em;
+}
+
+.person-data {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 0.5fr 1fr 2fr 1fr 1fr;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.person-data > p {
+    margin-left: 2em;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.grid-person {
+    /*grid-template-columns: 2fr 1fr 2fr;*/
+}
+
+/*style the items (options), including the selected item:*/
+.select-items, .select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+.underline {
+    border-bottom: 1px solid gray;
+    color: rgb(28, 28, 167)
+}
+
+.header {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr;
+    font-style: oblique;
+}
+
+.header-cell {
+    text-align: center;
+    border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    border-radius: 1em;
+    padding: 0.5em;
+}
+
+.row {
+    flex: 1;
+    text-align: center;
+    border: 1px solid #d0d;
+    border-radius: 1em;
+    background-color: #fdf;
+    display: grid;
+    grid-template-columns: 0.3fr 1.7fr 2fr 1fr 1fr;
+    padding: 0.5em;
+    margin: 0.5em;
+}
+
+.grid-address {
+    grid-template-columns: 0.5fr 1.5fr 1fr 2fr 3fr 1fr;
+}
+
+.grid-contact {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+}
+
+.grid-contact-value {
+    grid-template-columns: 1fr;
+    background-color: #aff;
+}
+
+.contact-text {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.new-row {
+    flex: 1;
+    text-align: center;
+    border: 1px solid #d0d;
+    border-radius: 1em;
+    background-color: #7ff;
+    display: grid;
+    grid-template-columns: 0.3fr 1.7fr 2fr 1fr 1fr;
+    padding: 0.5em;
+}
+
+.new-row input, .new-row button {
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    font: inherit;
+}
+
+.scroll {
+    overflow-y: auto;
+    height: 48vh;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: auto;
+    padding: 0.3em;
+    font: inherit;
+    border: 1px solid #caced1;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    background-color: #bff;
+}
+
+.formButton {
+        appearance: none;
+        -webkit-appearance: none;
+    font-size: 0.5em;
+    padding: 0.2em 0;
+    width: auto;
+    background-color:  black;
+    color: #bff;
+    cursor: pointer;
+}

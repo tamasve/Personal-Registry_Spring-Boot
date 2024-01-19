@@ -1,0 +1,110 @@
+<!doctype html>
+<html layout:decorate="~{layouts/main}">
+
+<head>
+    <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+        <section class="report" layout:fragment="content">
+
+            <section class="title">
+                <h2>Person data</h2>
+            </section>
+
+            <section class="container">
+
+              <section class="data">
+
+                <article class="person-data underline">
+
+                    <p class="align-right">Vezetéknév:</p>
+                    <p th:text="${person.lastName}">Kovács</p>
+                    <p class="align-right">Keresztnév:</p>
+                    <p th:text="${person.firstName}">Péter</p>
+                    <p class="align-right">Személyi azonosító:</p>
+                    <p>
+                        <form action="#"  id="cardForm" th:action="@{/persons/select/}">
+                            <select id="selectIdCard" name="selectIdCard">
+                                <option th:each="pers : ${persons}"
+                                                    th:text="${pers.idCard}"
+                                                    th:value="${pers.id}"
+                                                    selected="${pers.idCard == person.idCard} ? 'selected' : ''">673456KL</option>
+                            </select>
+                            <button type="submit" class="formButton">Select other person</button>
+                        </form>
+                    </p>
+
+<!--                    <p> <a th:href="@{/persons/new}">➕</a> </p>-->
+
+                </article>
+
+                <article class="persons-table">
+                    <section class="header grid-address">
+                        <div class="header-cell"></div>
+                        <div class="header-cell">Cím típusa</div>
+                        <div class="header-cell">Irányítószám</div>
+                        <div class="header-cell">Város</div>
+                        <div class="header-cell">Közterület</div>
+                        <div class="header-cell">Házszám</div>
+                    </section>
+
+                    <!-- 1 row for adding a new apartment =a FORM with 1 apartment object -->
+<!--                    <form th:if="${newRow}" class="new-row" th:action="@{/apartments/add}" method="post" th:object="${obj}">-->
+<!--                        <div>️<button type="submit">➕</button></div>-->
+<!--                        <div><input type="text" name="shortId" th:field="*{shortId}" /></div>-->
+<!--                        <div><input type="text" name="number" th:field="*{number}" /></div>-->
+<!--                        <div><input type="text" name="persons" th:field="*{persons}" /></div>-->
+<!--                        <div><input type="text" name="squaremeter" th:field="*{squaremeter}" /></div>-->
+<!--                    </form>-->
+
+                    <!-- A row for each apartment object -->
+                    <section th:each="address : ${person.addresses}">
+
+                        <section class="row grid-address">
+                            <div><a th:href="@{/addresses/delete/{id}(id=${address.id})}">🗑️</a></div>
+                            <div th:text="${address.addressType.value}">Állandó</div>
+                            <div th:text="${address.postalCode}">1135</div>
+                            <div th:text="${address.city}">Budapest</div>
+                            <div th:text="${address.place}">Váci út</div>
+                            <div th:text="${address.number}">72</div>
+                        </section>
+
+                        <section th:each="contact, status : ${address.contacts}" class="grid-contact">
+                            <div th:text="${status.first} ? 'Elérhetőségek' : ''" class="contact-text"></div>
+                            <div th:text="${contact.contactType.value} +':'" class="header-cell">Phone:</div>
+                            <div th:text="${contact.value}" class="row grid-contact-value">+36-30-6566464</div>
+                        </section>
+
+                    </section>
+
+                </article>
+
+              </section>
+            </section>
+
+<!--            This small JS code is needed so that we can gain the selected value of the option select - it changes action link -->
+            <script type="text/javascript">
+                console.log("JS run...");
+                var e = document.getElementById('selectIdCard');
+                e.addEventListener("change", setFormAction);
+                setFormAction();
+
+                function setFormAction() {
+                    var frm = document.getElementById('cardForm');
+                    if (frm) {
+                        console.log("form found...");
+                        var e = document.getElementById('selectIdCard');
+                        var text = e.options[e.selectedIndex].text;
+                        console.log(text);
+                        frm.action = '/persons/select/' + text;
+                    }
+                }
+            </script>
+
+        </section>
+
+</body>
+
+</html>

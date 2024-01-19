@@ -20,4 +20,14 @@ public class PersonServiceImpl implements PersonService{
     public List<Person> findAll() {
         return personRepository.findAll();
     }
+
+    @Override
+    public Person findById(Long id) {
+        return personRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Person findByIdCard(String idCard) {
+        return personRepository.findByIdCard(idCard);
+    }
 }

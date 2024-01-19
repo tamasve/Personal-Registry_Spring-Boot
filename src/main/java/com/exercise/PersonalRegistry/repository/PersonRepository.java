@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PersonRepository extends ListCrudRepository<Person, Long> {
 
+    Person findByIdCard(String idCard);
+
 }
 

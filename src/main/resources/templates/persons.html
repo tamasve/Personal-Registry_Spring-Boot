@@ -1,0 +1,60 @@
+<!doctype html>
+<html layout:decorate="~{layouts/main}">
+
+<head>
+    <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+        <section class="report" layout:fragment="content">
+
+            <section class="title">
+                <h2>Persons</h2>
+            </section>
+
+            <section class="container">
+
+              <section class="data">
+
+                <article class="persons-table">
+                    <section class="header">
+                        <div class="header-cell">First Name</div>
+                        <div class="header-cell">Last Name</div>
+                        <div class="header-cell">ID card</div>
+                    </section>
+
+                    <section class="scroll">
+
+                        <section class="row" th:each="person : ${persons}">
+                            <div><a th:href="@{/persons/select/{id}(id=${person.id})}">✅</a></div>
+                            <div th:text="${person.firstName}">Tom</div>
+                            <div  th:text="${person.lastName}">Sawyer</div>
+                            <div  th:text="${person.idCard}">458734KL</div>
+                            <div><a th:href="@{/persons/delete/{id}(id=${person.id})}">🗑️</a></div>
+                        </section>
+
+                        <!--/*-->
+                        <section class="row">
+                            <div>Dora</div>
+                            <div>Derek</div>
+                            <div>756353KO</div>
+                        </section>
+                        <section class="row">
+                            <div>Kili</div>
+                            <div>Manjaro</div>
+                            <div>143545ZT</div>
+                        </section>
+                        <!--*/-->
+
+                    </section>
+
+                </article>
+
+              </section>
+            </section>
+        </section>
+
+</body>
+
+</html>

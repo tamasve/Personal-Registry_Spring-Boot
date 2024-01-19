@@ -28,16 +28,21 @@ public class Address {
     @JoinColumn(name = "address_type_id")
     AddressType addressType;
 
-    @Column(name = "address_value")
-    String value;
+    int postalCode;
+    String city;
+    String place;
+    int number;
 
     @JsonBackReference
     @OneToMany(mappedBy = "address")
     List<Contact> contacts;
 
-    public Address(Person person, AddressType addressType, String value) {
+    public Address(Person person, AddressType addressType, int postalCode, String city, String place, int number) {
         this.person = person;
         this.addressType = addressType;
-        this.value = value;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.place = place;
+        this.number = number;
     }
 }
