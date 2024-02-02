@@ -20,4 +20,12 @@ public class ContactServiceImpl implements ContactService{
     public List<Contact> findAll() {
         return contactRepository.findAll();
     }
+
+    @Override
+    public void deleteAllByAddressId(Long id) {
+        for (Contact contact : contactRepository.findAllByAddressId(id)) {
+            contactRepository.delete(contact);
+        }
+    }
+
 }

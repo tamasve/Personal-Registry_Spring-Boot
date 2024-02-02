@@ -11,4 +11,6 @@ public interface PersonService {
     Person findById(Long id);
 
     Person findByIdCard(String idCard);
+
+    void deleteById(Long id);
 }

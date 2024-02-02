@@ -143,6 +143,11 @@ h2 {
     background-color: #aff;
 }
 
+.grid-contact-type{
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+}
+
 .contact-text {
     text-align: center;
     font-size: 1.2em;
@@ -164,6 +169,7 @@ h2 {
     border: none;
     text-align: center;
     font: inherit;
+    padding: 0.2em;
 }
 
 .scroll {
@@ -172,8 +178,8 @@ h2 {
 }
 
 select {
-    appearance: none;
-    -webkit-appearance: none;
+        appearance: none;
+        -webkit-appearance: none;
     width: auto;
     padding: 0.3em;
     font: inherit;

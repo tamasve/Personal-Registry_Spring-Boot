@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,23 +17,25 @@ public class PersonController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    // for filling a new Person
+    // for filling out the form for a new Person with all its addresses and their contacts
     private Person newPerson;
     private List<Address> newAddresses;
     private List<Contact> newContacts1, newContacts2;
 
+    // DI for all service classes
     PersonService personService;
     AddressService addressService;
     AddressTypeService addressTypeService;
     ContactService contactService;
     ContactTypeService contactTypeService;
+
     @Autowired
     public PersonController(
-                PersonService personService,
-                AddressService addressService,
-                AddressTypeService addressTypeService,
-                ContactService contactService,
-                ContactTypeService contactTypeService) {
+            PersonService personService,
+            AddressService addressService,
+            AddressTypeService addressTypeService,
+            ContactService contactService,
+            ContactTypeService contactTypeService) {
         this.personService = personService;
         this.addressService = addressService;
         this.addressTypeService = addressTypeService;
@@ -72,12 +71,17 @@ public class PersonController {
 
     @GetMapping("/persons/delete/{id}")
     public String deletePerson(@PathVariable("id") Long id) {
-        log.info(personService.findById(id).getFirstName());
-        return "home";
+        personService.deleteById(id);
+        return "redirect:/persons";
     }
 
     @GetMapping("/addresses/delete/{id}")
     public String deleteAddress(@PathVariable("id") Long id) {
+        return "home";
+    }
+
+    @GetMapping("/contacts/delete/{id}")
+    public String deleteContact(@PathVariable("id") Long id) {
         return "home";
     }
 
@@ -105,16 +109,12 @@ public class PersonController {
 
     @PostMapping("/new-person/save")
     public String savePerson(@ModelAttribute("person") Person person,
-                                    @ModelAttribute("addresses") List<Address> addresses,
-                                    @ModelAttribute("contacts1") List<Contact> contacts1,
-                                    @ModelAttribute("contacts2") List<Contact> contacts2) {
+                             @ModelAttribute("addresses") List<Address> addresses,
+                             @ModelAttribute("contacts1") List<Contact> contacts1,
+                             @ModelAttribute("contacts2") List<Contact> contacts2) {
         log.info(person.getLastName());
         log.info(addresses.get(0).getCity());
         return "home";
     }
 
-    @GetMapping("/contact-types")
-    public String contactTypes() {
-        return "home";
-    }
 }

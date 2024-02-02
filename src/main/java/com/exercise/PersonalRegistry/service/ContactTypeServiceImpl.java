@@ -20,4 +20,14 @@ public class ContactTypeServiceImpl implements ContactTypeService{
     public List<ContactType> findAll() {
         return contactTypeRepository.findAll();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        contactTypeRepository.deleteById(id);
+    }
+
+    @Override
+    public ContactType save(ContactType contactType) {
+        return contactTypeRepository.save(contactType);
+    }
 }

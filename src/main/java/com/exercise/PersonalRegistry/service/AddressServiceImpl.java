@@ -11,13 +11,30 @@ import java.util.List;
 public class AddressServiceImpl implements AddressService{
 
     AddressRepository addressRepository;
+    ContactService contactService;
     @Autowired
-    public void setAddressRepository(AddressRepository addressRepository) {
+    public AddressServiceImpl(
+            AddressRepository addressRepository,
+            ContactService contactService) {
         this.addressRepository = addressRepository;
+        this.contactService = contactService;
     }
 
     @Override
     public List<Address> findAll() {
         return addressRepository.findAll();
+    }
+
+    @Override
+    public List<Address> findByPersonId(Long id) {
+        return addressRepository.findByPersonId(id);
+    }
+
+    @Override
+    public void deleteAllByPersonId(Long id) {
+        for (Address address : findByPersonId(id)) {
+            contactService.deleteAllByAddressId( address.getId() );
+            addressRepository.delete(address);
+        }
     }
 }

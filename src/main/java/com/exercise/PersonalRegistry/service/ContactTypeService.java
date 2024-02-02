@@ -7,4 +7,8 @@ import java.util.List;
 public interface ContactTypeService {
 
     List<ContactType> findAll();
+
+    void deleteById(Long id);
+
+    ContactType save(ContactType contactType);
 }
