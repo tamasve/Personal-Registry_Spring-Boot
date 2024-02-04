@@ -80,11 +80,14 @@ public class PersonController {
 
     // common objects needed in the Model - this method runs first at every request!
     @ModelAttribute
-    public void handover(Model model, @ModelAttribute("contactTypeValue") String contactTypeValue) {
+    public void handover(Model model) {
         model.addAttribute("persons", personService.findAll());
-        model.addAttribute("modifiedContactId", modifiedContactId);
         model.addAttribute("contactTypes", contactTypeService.findAll());
-        model.addAttribute("contactTypeValue", " ");
+        model.addAttribute("modifiedContactId", modifiedContactId);
+        if (modifiedContactId != 0L)
+            model.addAttribute("contactDTO", new ContactDTO(modifiedContactId, contactService.findById(modifiedContactId).getAddress().getId(), contactTypeService.first().getId(), " "));
+        else
+            model.addAttribute("contactDTO", new ContactDTO(0L, 0L, contactTypeService.first().getId(), " "));
     }
 
     @GetMapping("/person")
@@ -110,16 +113,18 @@ public class PersonController {
         return "redirect:/person";
     }
 
+    // back from the mini-form: get all field values from the DTO and set them to the new Contact object, then save it
     @PostMapping("/contacts/save/{id}")
-    public String saveContact(@PathVariable("id") Long id, @ModelAttribute("contactTypeValue") String contactTypeValue, @ModelAttribute Contact newContact) {
+    public String saveContact(@PathVariable("id") Long id, @ModelAttribute("contactDTO") ContactDTO contactDTO) {
         Contact contact = contactService.findById(id);
-        contact.setValue( newContact.getValue() );
-        log.info("CONTACTTYPE= "+contactTypeValue);     // how to gain it?
+        contact.setContactType( contactTypeService.findById( contactDTO.getContactTypeId() ) );
+        contact.setValue( contactDTO.getValue() );
         contactService.save(contact);
         modifiedContactId = 0L;         // not to modify anymore: print data row instead of input form
         return "redirect:/person";
     }
 
+    // -- NEW PERSON FORM --
 
     @GetMapping("/new-person")
     public String newPerson(Model model) {

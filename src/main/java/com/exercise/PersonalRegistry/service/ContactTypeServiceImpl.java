@@ -36,4 +36,9 @@ public class ContactTypeServiceImpl implements ContactTypeService{
     public ContactType first() {
         return contactTypeRepository.findAll().get(0);
     }
+
+    @Override
+    public ContactType findById(Long id) {
+        return contactTypeRepository.findById(id).orElse(null);
+    }
 }

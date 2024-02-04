@@ -14,4 +14,6 @@ public interface ContactTypeService {
 
     // get the 1st value from DB
     ContactType first();
+
+    ContactType findById(Long id);
 }

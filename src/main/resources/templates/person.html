@@ -68,7 +68,8 @@
                             <div th:text="${address.number}">72</div>
                         </section>
 
-                        <section th:each="contact, status : ${address.contacts}" class="grid-contact" th:unless="${contact.id==modifiedContactId}">
+                        <!-- a row for each contact -->
+                        <section th:unless="${contact.id==modifiedContactId}" th:each="contact, status : ${address.contacts}" class="grid-contact" >
                             <div class="contact-text">
                                 <a th:if="${status.first}" th:href="@{/persons/{personId}/addresses/{addressId}/contacts/new(personId=${person.id}, addressId=${address.id})}" >➕</a>
                             </div>
@@ -77,13 +78,18 @@
                             <div th:text="${contact.value}" class="row grid-contact-value">+36-30-6566464</div>
                         </section>
 
-                        <form th:each="contact : ${address.contacts}" th:if="${contact.id==modifiedContactId}"  th:object="${contact}" th:action="@{/contacts/save/{contactId}(contactId=${contact.id})}" th:method="post"  class="row new-row grid-contact-type">
-                            <div><button type="submit"> 💾 </button></div>
+                        <!-- a row for the new contact created as a mini-form, as the last row -->
+                        <form th:if="${modifiedContactId != 0L and address.id == contactDTO.addressId}"
+                                        th:object="${contactDTO}"
+                                        th:action="@{/contacts/save/{contactId}(contactId=${contactDTO.id})}"
+                                        th:method="post"
+                                        class="row new-row grid-contact-type">
+                            <div><button type="submit" class="formButton" > 💾 </button></div>
                             <div>
-                                <select th:value="${contact.contactType.value}">
-                                    <option th:each="contacttype : ${contactTypes}"
-                                                        th:text="${contacttype.value}"
-                                                        th:value="${contacttype.value}">phone</option>
+                                <select th:field="*{contactTypeId}">
+                                    <option th:each="contactType : ${contactTypes}"
+                                                        th:text="${contactType.value}"
+                                                        th:value="${contactType.id}">phone</option>
                                 </select>
                             </div>
                             <div><input type="text" name="value" id="value" th:value="*{value}" placeholder="a new contact value ..." /></div>
