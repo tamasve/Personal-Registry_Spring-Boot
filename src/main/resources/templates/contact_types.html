@@ -21,7 +21,7 @@
                     <section class="header">
                         <div class="header-cell">Contact name</div>
                         <div class="header-cell">ID</div>
-                        <div class="header-cell"><a th:href="@{contact-types/new}">➕</a></div>
+                        <div class="header-cell"><a th:href="@{/contact-types/new}">➕</a></div>
                     </section>
 
                     <section class="scroll">
@@ -32,8 +32,8 @@
                             <div><a th:href="@{/contact-types/delete/{id}(id=${contactType.id})}">🗑️</a></div>
                         </section>
 
-                        <form  class="row new-row" th:if="${newRow}" th:action="@{/contact-types/save}" th:method="post" >
-                            <div> <input type="text" name="value" id="value" th:field="${contactType.value}" /></div>
+                        <form  th:if="${newRow}" th:action="@{/contact-types/save}" th:method="post" class="row new-row" >
+                            <div> <input type="text" name="value" id="value" th:field="${contactType.value}" placeholder="a new contact type name..." /></div>
                             <div> <label></label></div>
                             <div>️<button type="submit">➕</button></div>
                         </form>

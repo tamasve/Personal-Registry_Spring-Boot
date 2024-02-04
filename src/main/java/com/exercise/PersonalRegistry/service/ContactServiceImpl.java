@@ -28,4 +28,14 @@ public class ContactServiceImpl implements ContactService{
         }
     }
 
+    @Override
+    public Contact save(Contact contact) {
+        return contactRepository.save(contact);
+    }
+
+    @Override
+    public Contact findById(Long id) {
+        return contactRepository.findById(id).orElse(null);
+    }
+
 }

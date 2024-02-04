@@ -23,10 +23,9 @@
                     <p th:text="${person.lastName}">Kovács</p>
                     <p class="align-right">Keresztnév:</p>
                     <p th:text="${person.firstName}">Péter</p>
-                    <p class="align-right">Személyi azonosító:</p>
-                    <p>
+                    <p class="align-right padding-right">Személyi azonosító:</p>
                         <form action="#"  id="cardForm" th:action="@{/persons/select/}">
-                            <select id="selectIdCard" name="selectIdCard">
+                            <select id="selectIdCard" name="selectIdCard">              <!-- the drop-down list of card ids -->
                                 <option th:each="pers : ${persons}"
                                                     th:text="${pers.idCard}"
                                                     th:value="${pers.id}"
@@ -34,12 +33,11 @@
                             </select>
                             <button type="submit" class="formButton">Select other person</button>
                         </form>
-                    </p>
 
 
                 </article>
 
-                <article class="persons-table">
+                <article class="persons-table person-scroll">
                     <section class="header grid-address">
                         <div class="header-cell"></div>
                         <div class="header-cell">Cím típusa</div>
@@ -59,7 +57,7 @@
 <!--                    </form>-->
 
                     <!-- A row for each apartment object -->
-                    <section th:each="address : ${person.addresses}">
+                    <section th:each="address : ${person.addresses}" >
 
                         <section class="row grid-address">
                             <div><a th:href="@{/addresses/delete/{id}(id=${address.id})}">🗑️</a></div>
@@ -70,11 +68,26 @@
                             <div th:text="${address.number}">72</div>
                         </section>
 
-                        <section th:each="contact, status : ${address.contacts}" class="grid-contact">
+                        <section th:each="contact, status : ${address.contacts}" class="grid-contact" th:unless="${contact.id==modifiedContactId}">
+                            <div class="contact-text">
+                                <a th:if="${status.first}" th:href="@{/persons/{personId}/addresses/{addressId}/contacts/new(personId=${person.id}, addressId=${address.id})}" >➕</a>
+                            </div>
                             <div th:text="${status.first} ? 'Elérhetőségek' : ''" class="contact-text"></div>
                             <div th:text="${contact.contactType.value} +':'" class="header-cell">Phone:</div>
                             <div th:text="${contact.value}" class="row grid-contact-value">+36-30-6566464</div>
                         </section>
+
+                        <form th:each="contact : ${address.contacts}" th:if="${contact.id==modifiedContactId}"  th:object="${contact}" th:action="@{/contacts/save/{contactId}(contactId=${contact.id})}" th:method="post"  class="row new-row grid-contact-type">
+                            <div><button type="submit"> 💾 </button></div>
+                            <div>
+                                <select th:value="${contact.contactType.value}">
+                                    <option th:each="contacttype : ${contactTypes}"
+                                                        th:text="${contacttype.value}"
+                                                        th:value="${contacttype.value}">phone</option>
+                                </select>
+                            </div>
+                            <div><input type="text" name="value" id="value" th:value="*{value}" placeholder="a new contact value ..." /></div>
+                        </form>
 
                     </section>
 

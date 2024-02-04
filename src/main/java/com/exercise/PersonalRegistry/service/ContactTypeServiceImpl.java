@@ -30,4 +30,10 @@ public class ContactTypeServiceImpl implements ContactTypeService{
     public ContactType save(ContactType contactType) {
         return contactTypeRepository.save(contactType);
     }
+
+    // get the 1st value from DB
+    @Override
+    public ContactType first() {
+        return contactTypeRepository.findAll().get(0);
+    }
 }

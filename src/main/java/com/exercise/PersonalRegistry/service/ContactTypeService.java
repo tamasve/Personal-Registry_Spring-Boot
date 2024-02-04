@@ -11,4 +11,7 @@ public interface ContactTypeService {
     void deleteById(Long id);
 
     ContactType save(ContactType contactType);
+
+    // get the 1st value from DB
+    ContactType first();
 }

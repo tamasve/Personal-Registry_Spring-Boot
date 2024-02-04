@@ -9,4 +9,6 @@ public interface AddressService {
     List<Address> findAll();
     List<Address> findByPersonId(Long id);
     void deleteAllByPersonId(Long id);
+
+    Address findById(Long id);
 }

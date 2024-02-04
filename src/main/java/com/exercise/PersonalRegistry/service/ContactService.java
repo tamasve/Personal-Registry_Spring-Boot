@@ -9,4 +9,8 @@ public interface ContactService {
     List<Contact> findAll();
 
     void deleteAllByAddressId(Long id);
+
+    Contact save(Contact contact);
+
+    Contact findById(Long id);
 }

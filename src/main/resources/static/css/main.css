@@ -70,7 +70,7 @@ h2 {
 
 .person-data {
     display: grid;
-    grid-template-columns: 0.5fr 1fr 0.5fr 1fr 2fr 1fr 1fr;
+    grid-template-columns: 0.5fr 1fr 0.5fr 1fr 2fr 1fr;
     font-size: 1.3em;
     font-weight: bold;
 }
@@ -81,6 +81,10 @@ h2 {
 
 .align-right {
     text-align: right;
+}
+
+.padding-right {
+    padding-right: 2em;
 }
 
 .grid-person {
@@ -135,7 +139,7 @@ h2 {
 
 .grid-contact {
     display: grid;
-    grid-template-columns: 2fr 1fr 2fr;
+    grid-template-columns: 1fr 2fr 1fr 2fr;
 }
 
 .grid-contact-value {
@@ -177,6 +181,11 @@ h2 {
     height: 48vh;
 }
 
+.person-scroll {
+    overflow-y: auto;
+    max-height: 66vh;
+}
+
 select {
         appearance: none;
         -webkit-appearance: none;
@@ -194,6 +203,7 @@ select {
         -webkit-appearance: none;
     font-size: 0.6em;
     padding: 0.2em 0;
+    margin-bottom: 1em;
     width: auto;
     background-color:  black;
     color: #bff;
