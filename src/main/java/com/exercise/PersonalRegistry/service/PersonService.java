@@ -13,4 +13,6 @@ public interface PersonService {
     Person findByIdCard(String idCard);
 
     void deleteById(Long id);
+
+    Person save(Person person);
 }

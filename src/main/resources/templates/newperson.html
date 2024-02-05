@@ -17,49 +17,49 @@
 
               <section class="data">
 
-                  <form name="partner-registration" th:action="@{/new-person/save}" method="post">
+                  <form name="person-registration" th:object="${person}" th:action="@{/new-person/save}" method="post">
 
                         <article class="person-data underline" >
 
-                            <label class="align-right">Vezetéknév:</label>
-                            <input type="text" th:value="${person.lastName}" id="lastName" class="inputField"/>
-                            <label class="align-right">Keresztnév:</label>
-                            <input type="text" th:value="${person.firstName}" id="firstName" class="inputField"/>
+                            <p class="align-right">Vezetéknév:</p>
+                            <input type="text" th:field="*{lastName}" id="lastName" class="inputField"/>
+                            <p class="align-right">Keresztnév:</p>
+                            <input type="text" th:field="*{firstName}" id="firstName" class="inputField"/>
                             <p class="align-right">Személyi azonosító:</p>
-                            <input type="text" th:value="${person.idCard}" id="idCard" class="inputField"/>
+                            <input type="text" th:field="*{idCard}" id="idCard" class="inputField"/>
 
                         </article>
 
-                        <article class="persons-table">
-                            <section class="header grid-address">
-                                <div class="header-cell"></div>
-                                <div class="header-cell">Cím típusa</div>
-                                <div class="header-cell">Irányítószám</div>
-                                <div class="header-cell">Város</div>
-                                <div class="header-cell">Közterület</div>
-                                <div class="header-cell">Házszám</div>
-                            </section>
+<!--                        <article class="persons-table">-->
+<!--                            <section class="header grid-address">-->
+<!--                                <div class="header-cell"></div>-->
+<!--                                <div class="header-cell">Cím típusa</div>-->
+<!--                                <div class="header-cell">Irányítószám</div>-->
+<!--                                <div class="header-cell">Város</div>-->
+<!--                                <div class="header-cell">Közterület</div>-->
+<!--                                <div class="header-cell">Házszám</div>-->
+<!--                            </section>-->
 
-                            <!-- A row for each apartment object -->
-                            <section th:each="address : ${addresses}">
+<!--                            &lt;!&ndash; A row for each apartment object &ndash;&gt;-->
+<!--                            <section th:each="address : ${addresses}">-->
 
-                                <section class="row grid-address" >
-                                    <div th:text="${address.addressType.value}">Állandó</div>
-                                    <input type="text" th:value="${address.postalCode}" class="inputField"/>
-                                    <input type="text" th:value="*{address.city}" class="inputField"/>
-                                    <input type="text" th:value="*{address.place}" class="inputField"/>
-                                    <input type="text" th:value="*{address.number}" class="inputField"/>
-                                </section>
-
-<!--                                <section th:each="contact, status : ${address.contacts}" class="grid-contact">-->
-<!--                                    <div th:text="${status.first} ? 'Elérhetőségek' : ''" class="contact-text"></div>-->
-<!--                                    <div th:text="${contact.contactType.value} +':'" class="header-cell">Phone:</div>-->
-<!--                                    <div th:text="${contact.value}" class="row grid-contact-value">+36-30-6566464</div>-->
+<!--                                <section class="row grid-address" >-->
+<!--                                    <div th:text="${address.addressType.value}">Állandó</div>-->
+<!--                                    <input type="text" th:value="${address.postalCode}" class="inputField"/>-->
+<!--                                    <input type="text" th:value="*{address.city}" class="inputField"/>-->
+<!--                                    <input type="text" th:value="*{address.place}" class="inputField"/>-->
+<!--                                    <input type="text" th:value="*{address.number}" class="inputField"/>-->
 <!--                                </section>-->
 
-                            </section>
+<!--&lt;!&ndash;                                <section th:each="contact, status : ${address.contacts}" class="grid-contact">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <div th:text="${status.first} ? 'Elérhetőségek' : ''" class="contact-text"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <div th:text="${contact.contactType.value} +':'" class="header-cell">Phone:</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <div th:text="${contact.value}" class="row grid-contact-value">+36-30-6566464</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </section>&ndash;&gt;-->
 
-                        </article>
+<!--                            </section>-->
+
+<!--                        </article>-->
 
                       <button type="submit" class="formButton2">Save Person data</button>
 

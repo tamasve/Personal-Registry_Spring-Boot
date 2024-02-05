@@ -46,11 +46,13 @@ public class PersonController {
             AddressTypeService addressTypeService,
             ContactService contactService,
             ContactTypeService contactTypeService) {
+
         this.personService = personService;
         this.addressService = addressService;
         this.addressTypeService = addressTypeService;
         this.contactService = contactService;
         this.contactTypeService = contactTypeService;
+
         shownPersonId = 1L;     // default: first registered
         modifiedContactId = 0L;     // default: no modification
         modifiedAddressId = 0L;    // default: no modification
@@ -104,13 +106,12 @@ public class PersonController {
                                                         contact.getAddress().getId(),
                                                         contact.getContactType().getId(),
                                                         contact.getValue()));
-        }
-        else {
+        } else {
             model.addAttribute("contactDTO",
                     new ContactDTO(0L,
-                            0L,
-                            contactTypeService.first().getId(),
-                            " "));
+                                                        0L,
+                                                        contactTypeService.first().getId(),
+                                                        " "));
         }
     }
 
@@ -178,13 +179,12 @@ public class PersonController {
     public String newAddress(Model model) {
 
         Person person = personService.findById(shownPersonId);
-        log.info(person.getLastName());
         List<Address> addresses = person.getAddresses();
-        log.info(""+addresses.size());
         if ( addresses.size() > 1 )  return "redirect:/person";
 
         Long addressTypeId = addresses.get(0).getAddressType().getId();
         addressTypeId = addressTypeId == 1L ? 2L : 1L;          // only 2 types possible
+
         modifiedAddressId = addressService.save( new Address( person, addressTypeService.findById(addressTypeId), 0, "", "", 0) ).getId();
 
         cancel = "delete";
@@ -224,37 +224,21 @@ public class PersonController {
 
     // -- NEW PERSON FORM --
 
+    // only for creating a new Person - but all addresses and their contacts will be created on the Person page...
     @GetMapping("/new-person")
     public String newPerson(Model model) {
-
         newPerson = new Person();
-        newAddresses = new ArrayList<>();
-        newContacts1 = new ArrayList<>();
-        newContacts2 = new ArrayList<>();
-
-        for (AddressType addressType : addressTypeService.findAll()) {
-            newAddresses.add(new Address(null, addressType, 0, "", "", 0));
-        }
-        for (ContactType contactType : contactTypeService.findAll()) {
-            newContacts1.add(new Contact(null, contactType, ""));
-            newContacts2.add(new Contact(null, contactType, ""));
-        }
         model.addAttribute("person", newPerson);
-        model.addAttribute("addresses", newAddresses);
-        model.addAttribute("contacts1", newContacts1);
-        model.addAttribute("contacts2", newContacts2);
         return "newperson";
     }
 
-    // save new person
+    // save new person, then go to Person page with 1 created Address to fill out...
     @PostMapping("/new-person/save")
-    public String savePerson(@ModelAttribute("person") Person person,
-                             @ModelAttribute("addresses") List<Address> addresses,
-                             @ModelAttribute("contacts1") List<Contact> contacts1,
-                             @ModelAttribute("contacts2") List<Contact> contacts2) {
-        log.info(person.getLastName());
-        log.info(addresses.get(0).getCity());
-        return "home";
+    public String savePerson(@ModelAttribute("person") Person person){
+        shownPersonId = personService.save(person).getId();
+        modifiedAddressId = addressService.save( new Address( person, addressTypeService.findById(1L), 0, "", "", 0) ).getId();
+        cancel = "delete";
+        return "redirect:/person";
     }
 
 }

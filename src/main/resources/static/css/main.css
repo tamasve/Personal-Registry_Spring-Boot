@@ -76,11 +76,13 @@ h2 {
 }
 
 .person-data > p {
+    margin: 0;
     margin-left: 2em;
 }
 
 .align-right {
     text-align: right;
+    padding-right: 2em;
 }
 
 .padding-right {
@@ -225,8 +227,8 @@ select {
 .formButton2 {
         appearance: none;
         -webkit-appearance: none;
-    font-size: 1.5em;
-    padding: 0.2em 0;
+    font-size: 1.3em;
+    padding: 0.2em 0.5em;
     width: auto;
     background-color:  black;
     color: #bff;
@@ -236,4 +238,11 @@ select {
 .inputField {
     appearance: none;
     -webkit-appearance: none;
+    border: solid 1px #999;
+    border-radius: 1.5em;
+    font: inherit;
+    background-color: transparent;
+    padding: 0.2em 0.5em;
+    height: 2em;
+    width: 8em;
 }

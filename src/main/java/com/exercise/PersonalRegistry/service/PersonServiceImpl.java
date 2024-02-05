@@ -45,4 +45,9 @@ public class PersonServiceImpl implements PersonService{
         addressService.deleteAllByPersonId(id);
         personRepository.deleteById(id);
     }
+
+    @Override
+    public Person save(Person person) {
+        return personRepository.save(person);
+    }
 }
