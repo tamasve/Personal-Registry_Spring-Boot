@@ -38,4 +38,14 @@ public class ContactServiceImpl implements ContactService{
         return contactRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        contactRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(Contact contact) {
+        contactRepository.delete(contact);
+    }
+
 }

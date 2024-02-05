@@ -103,7 +103,8 @@ h2 {
 
 .underline {
     border-bottom: 1px solid gray;
-    color: rgb(28, 28, 167)
+    color: rgb(28, 28, 167);
+    padding-bottom: 0.7em;
 }
 
 .header {
@@ -119,6 +120,7 @@ h2 {
     border-right: 1px solid red;
     border-radius: 1em;
     padding: 0.5em;
+    background-color: white;
 }
 
 .row {
@@ -134,22 +136,26 @@ h2 {
 }
 
 .grid-address {
-    grid-template-columns: 0.5fr 1.5fr 1fr 2fr 3fr 1fr;
+    grid-template-columns: 0.5fr 0.5fr 1.5fr 1fr 2fr 3fr 1fr;
+}
+
+.grid-address-header {
+    grid-template-columns: 0.5fr 1.8fr 1fr 2fr 2.7fr 1fr;
 }
 
 .grid-contact {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr 2fr;
+    grid-template-columns: 1fr 2fr 1fr 2fr 0.5fr 0.5fr;
 }
+
+.grid-contact-type {
+     display: grid;
+     grid-template-columns: 2fr 2fr 1fr 1fr;
+ }
 
 .grid-contact-value {
     grid-template-columns: 1fr;
     background-color: #aff;
-}
-
-.grid-contact-type{
-    display: grid;
-    grid-template-columns: 2fr 1fr 2fr;
 }
 
 .contact-text {
@@ -169,11 +175,18 @@ h2 {
 }
 
 .new-row input, .new-row button {
-    background-color: transparent;
-    border: none;
+        appearance: none;
+        -webkit-appearance: none;
+    background-color: white;
+    border: 1px solid #caced1;
+    border-radius: 0.25rem;
     text-align: center;
     font: inherit;
     padding: 0.2em;
+}
+
+.grid-new-address {
+    grid-template-columns: 0.5fr 1.5fr 1fr 2fr 3fr 1fr 0.5fr;
 }
 
 .scroll {
@@ -203,7 +216,6 @@ select {
         -webkit-appearance: none;
     font-size: 0.6em;
     padding: 0.2em 0;
-    margin-bottom: 1em;
     width: auto;
     background-color:  black;
     color: #bff;

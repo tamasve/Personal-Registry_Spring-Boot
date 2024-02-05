@@ -38,8 +38,8 @@
                 </article>
 
                 <article class="persons-table person-scroll">
-                    <section class="header grid-address">
-                        <div class="header-cell"></div>
+                    <section class="header grid-address-header">
+                        <div class="header-cell"> <a th:href="@{/addresses/new}"> ➕ </a> </div>
                         <div class="header-cell">Cím típusa</div>
                         <div class="header-cell">Irányítószám</div>
                         <div class="header-cell">Város</div>
@@ -47,20 +47,29 @@
                         <div class="header-cell">Házszám</div>
                     </section>
 
-                    <!-- 1 row for adding a new address =a FORM with 1 address object -->
-<!--                    <form th:if="${newRow}" class="new-row" th:action="@{/addresses/add}" method="post" th:object="${obj}">-->
-<!--                        <div>️<button type="submit">➕</button></div>-->
-<!--                        <div><input type="text" name="postalCode" th:field="*{postalCode}" /></div>-->
-<!--                        <div><input type="text" name="city" th:field="*{city}" /></div>-->
-<!--                        <div><input type="text" name="place" th:field="*{place}" /></div>-->
-<!--                        <div><input type="text" name="number" th:field="*{number}" /></div>-->
-<!--                    </form>-->
+                    <!-- a row for the new address created as a mini-form, coming first -->
+                    <form th:if="${modifiedAddressId != 0L}"
+                                    th:object="${newAddress}"
+                                    th:action="@{/addresses/new/save}"
+                                    method="post"
+                                    class="new-row grid-new-address" >
+                        <div>️<button type="submit" class="formButton">💾 </button></div>
+                        <div th:text="*{addressType.value}">Állandó</div>
+                        <div><input type="text" name="postalCode" th:value="*{postalCode}" /></div>
+                        <div><input type="text" name="city" th:value="*{city}" /></div>
+                        <div><input type="text" name="place" th:value="*{place}" /></div>
+                        <div><input type="text" name="number" th:value="*{number}" /></div>
+                        <div>
+                            <a th:href="@{/addresses/{cancel}/{id} (cancel = ${cancel}, id = ${modifiedAddressId})}"> ❌ </a>
+                        </div>
+                    </form>
 
-                    <!-- A row for each apartment object -->
-                    <section th:each="address : ${person.addresses}" >
+                    <!-- A row for each address object -->
+                    <section th:unless="${address.id == modifiedAddressId}" th:each="address : ${person.addresses}" >
 
                         <section class="row grid-address">
-                            <div><a th:href="@{/addresses/delete/{id}(id=${address.id})}">🗑️</a></div>
+                            <div><a th:href="@{/addresses/modify/{id} (id=${address.id})}"> 🛠️ </a></div>
+                            <div><a th:href="@{/addresses/delete/{id} (id=${address.id})}">🗑️</a></div>
                             <div th:text="${address.addressType.value}">Állandó</div>
                             <div th:text="${address.postalCode}">1135</div>
                             <div th:text="${address.city}">Budapest</div>
@@ -69,30 +78,40 @@
                         </section>
 
                         <!-- a row for each contact -->
-                        <section th:unless="${contact.id==modifiedContactId}" th:each="contact, status : ${address.contacts}" class="grid-contact" >
+                        <section th:unless="${contact.id == modifiedContactId}" th:each="contact, status : ${address.contacts}" class="grid-contact" >
                             <div class="contact-text">
-                                <a th:if="${status.first}" th:href="@{/persons/{personId}/addresses/{addressId}/contacts/new(personId=${person.id}, addressId=${address.id})}" >➕</a>
+                                <a th:if="${status.first}" th:href="@{/persons/{personId}/addresses/{addressId}/contacts/new (personId=${person.id}, addressId=${address.id})}" >➕</a>
                             </div>
                             <div th:text="${status.first} ? 'Elérhetőségek' : ''" class="contact-text"></div>
                             <div th:text="${contact.contactType.value} +':'" class="header-cell">Phone:</div>
                             <div th:text="${contact.value}" class="row grid-contact-value">+36-30-6566464</div>
+                            <div>
+                                <a th:href="@{/contacts/modify/{id} (id = ${contact.id})}" class="header-cell"> 🛠️️</a>
+                            </div>
+                            <div>
+                                <a th:href="@{/contacts/delete/{id} (id = ${contact.id})}" class="header-cell"> 🗑️</a>
+                            </div>
                         </section>
 
-                        <!-- a row for the new contact created as a mini-form, as the last row -->
+                        <!-- a row for the new contact created as a mini-form, coming last -->
                         <form th:if="${modifiedContactId != 0L and address.id == contactDTO.addressId}"
                                         th:object="${contactDTO}"
-                                        th:action="@{/contacts/save/{contactId}(contactId=${contactDTO.id})}"
+                                        th:action="@{/contacts/save/{contactId} (contactId=${contactDTO.id})}"
                                         th:method="post"
-                                        class="row new-row grid-contact-type">
+                                        class="row new-row grid-contact">
                             <div><button type="submit" class="formButton" > 💾 </button></div>
+                            <div><p></p></div>
                             <div>
-                                <select th:field="*{contactTypeId}">
+                                <select th:field="*{contactTypeId}" class="header-cell">
                                     <option th:each="contactType : ${contactTypes}"
                                                         th:text="${contactType.value}"
                                                         th:value="${contactType.id}">phone</option>
                                 </select>
                             </div>
                             <div><input type="text" name="value" id="value" th:value="*{value}" placeholder="a new contact value ..." /></div>
+                            <div>
+                                <a th:href="@{/contacts/{cancel}/{id} (cancel = ${cancel}, id = ${contactDTO.id})}"> ❌ </a>
+                            </div>
                         </form>
 
                     </section>

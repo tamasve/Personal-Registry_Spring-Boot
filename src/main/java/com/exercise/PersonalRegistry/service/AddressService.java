@@ -10,5 +10,9 @@ public interface AddressService {
     List<Address> findByPersonId(Long id);
     void deleteAllByPersonId(Long id);
 
+    void deleteById(Long id);
+
     Address findById(Long id);
+
+    Address save (Address address);
 }

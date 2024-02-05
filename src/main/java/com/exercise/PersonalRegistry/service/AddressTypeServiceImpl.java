@@ -20,4 +20,9 @@ public class AddressTypeServiceImpl implements AddressTypeService{
     public List<AddressType> findAll() {
         return addressTypeRepository.findAll();
     }
+
+    @Override
+    public AddressType findById(Long id) {
+        return addressTypeRepository.findById(id).orElse(null);
+    }
 }

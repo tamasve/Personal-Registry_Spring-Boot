@@ -7,4 +7,6 @@ import java.util.List;
 public interface AddressTypeService {
 
     List<AddressType> findAll();
+
+    AddressType findById(Long id);
 }
