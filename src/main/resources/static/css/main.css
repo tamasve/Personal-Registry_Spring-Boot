@@ -246,3 +246,7 @@ select {
     height: 2em;
     width: 8em;
 }
+
+span {
+    font-style: oblique;
+}

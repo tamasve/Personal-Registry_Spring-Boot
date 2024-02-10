@@ -1,0 +1,44 @@
+<!doctype html>
+<html layout:decorate="~{layouts/main}">
+
+<head>
+<!--    <title>HOME</title>-->
+    <link rel="stylesheet" href="../static/css/apartments.css" th:href="@{/css/apartments.css}">
+</head>
+
+<body>
+
+    <section class="report"  layout:fragment="content">
+
+        <section class="title">
+            <h2>Oops! An error happened...</h2>
+        </section>
+
+        <section class="container">
+
+            <section class="data">
+
+                <article class="persons-table" th:object="${errorDetails}">
+                    <h2>Unfortunately an exception was thrown...</h2>
+                    <div>
+                        <span>When?:</span>
+                        <span th:text="*{time}"></span>
+                    </div>
+                    <div>
+                        <span>What?:</span>
+                        <span th:text="*{message}"></span>
+                    </div>
+                    <div>
+                        <span>Request?:</span>
+                        <span th:text="*{description}"></span>
+                    </div>
+
+                </article>
+
+            </section>
+        </section>
+    </section>
+
+</body>
+
+</html>
