@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -24,10 +23,10 @@ public class PersonController {
     Long modifiedContactId;
     Long modifiedAddressId;
 
-    // flag for new / modified items >> "cancel" means cancel or delete?
+    // flag for new / modified items >> "cancel" can mean cancel or delete
     String cancel;
 
-    // for filling out the form for a new Person with all its addresses and their contacts
+    // for filling out the form of a new Person with all  addresses and their contacts
     private Person newPerson;
     private List<Address> newAddresses;
     private List<Contact> newContacts1, newContacts2;
@@ -59,32 +58,12 @@ public class PersonController {
         cancel = "cancel";      // default: no deletion - this sets the mapping for the Cancel buttons on the form to different dispatcher methods
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "home";
-    }
-
-
-    // -- PERSONS PAGE --
-
-    @GetMapping("/persons")
-    public String persons(Model model) {
-        model.addAttribute("persons", personService.findAll());
-        return "persons";
-    }
-
-    @GetMapping("/persons/delete/{id}")
-    public String deletePerson(@PathVariable("id") Long id) {
-        personService.deleteById(id);
-        return "redirect:/persons";
-    }
-
 
 // -- PERSON PAGE --
 
-    // common objects needed in the Model - this method runs first at every request...
+    // -- Common  data objects for every rendering --
     @ModelAttribute
-    public void handover(Model model) {
+    public void dataHandover(Model model) {
 
         model.addAttribute("persons", personService.findAll());
         model.addAttribute("contactTypes", contactTypeService.findAll());
@@ -115,12 +94,14 @@ public class PersonController {
         }
     }
 
+    // -- The central  renderer method --
     @GetMapping("/person")
     public String person(Model model) {
         model.addAttribute("person", personService.findById(shownPersonId));
         return "person";
     }
 
+    // select a person by id card
     @GetMapping("/persons/select/{cardId}")
     public String selectPerson(@PathVariable("cardId") String cardId, Model model) {
         cardId = cardId.substring(0, 8);
@@ -131,7 +112,7 @@ public class PersonController {
         return "person";
     }
 
-    // put a NEW CONTACT row to a given address of the person:
+    // put a NEW CONTACT row to a given address of the selected person:
     // save a new bianco Contact with the 1st type into DB then offer it for modification
     @GetMapping("persons/{personId}/addresses/{addressId}/contacts/new")
     public  String newContactForAddress(@PathVariable("personId") Long personId, @PathVariable("addressId") Long addressId, Model model) {
@@ -141,7 +122,7 @@ public class PersonController {
         return "redirect:/person";
     }
 
-    // back from the mini-form: get all field values from the DTO and set them to the new Contact object, then save it
+    // back from the mini-form: get all field values from the DTO and set them to the new Contact object, then save it into DB
     @PostMapping("/contacts/save/{id}")
     public String saveContact(@PathVariable("id") Long id, @ModelAttribute("contactDTO") ContactDTO contactDTO) {
         Contact contact = contactService.findById(id);
@@ -155,6 +136,7 @@ public class PersonController {
         return "redirect:/person";
     }
 
+    // modify 1 contact of an address
     @GetMapping("/contacts/modify/{id}")
     public String modifyContact(@PathVariable("id") Long id) {
         if (modifiedAddressId == 0L && modifiedContactId == 0L)  modifiedContactId = id;       // only 1 new or modified item at the same time
@@ -162,6 +144,7 @@ public class PersonController {
         return "redirect:/person";
     }
 
+    // delete a contact of an address
     @GetMapping("/contacts/delete/{id}")
     public String deleteContact(@PathVariable("id") Long id) {
         contactService.deleteById(id);
@@ -169,12 +152,15 @@ public class PersonController {
         return "redirect:/person";
     }
 
+    // cancel modification of a contact of an address
     @GetMapping("/contacts/cancel/{id}")
     public String cancelContact(@PathVariable("id") Long id) {
         modifiedContactId = 0L;         // not to modify anymore: print data row instead of input form (in case of cancellation of a new contact)
         return "redirect:/person";
     }
 
+    // put a NEW ADDRESS row to the selected person if it has less than 2 addresses:
+    // save a new bianco Address with the missing type into DB then offer it for modification
     @GetMapping("/addresses/new")
     public String newAddress(Model model) {
 
@@ -187,10 +173,11 @@ public class PersonController {
 
         modifiedAddressId = addressService.save( new Address( person, addressTypeService.findById(addressTypeId), 0, "", "", 0) ).getId();
 
-        cancel = "delete";
+        cancel = "delete";      // this is a new Address >> cancel means delete
         return "redirect:/person";
     }
 
+    // coming back from the page with the new Address object filled out >> save it into DB after data check
     @PostMapping("/addresses/new/save")
     public String saveNewAddress(@ModelAttribute("newAddress") Address newAddress) {
         if (newAddress.getPostalCode() == 0 || newAddress.getCity().isEmpty() || newAddress.getPlace().isEmpty() || newAddress.getNumber() == 0)  return "redirect:/person";    // no value of address can be empty
@@ -201,6 +188,7 @@ public class PersonController {
         return "redirect:/person";
     }
 
+    // modify an Address of the selected person
     @GetMapping("/addresses/modify/{id}")
     public String modifyAddress(@PathVariable("id") Long id) {
         if (modifiedAddressId == 0L && modifiedContactId == 0L)  modifiedAddressId = id;       // only 1 new or modified item at the same time
@@ -208,6 +196,7 @@ public class PersonController {
         return "redirect:/person";
     }
 
+    // delete an Address of the selected person >> delete in DB
     @GetMapping("/addresses/delete/{id}")
     public String deleteAddress(@PathVariable("id") Long id) {
         addressService.deleteById(id);
@@ -215,6 +204,7 @@ public class PersonController {
         return "redirect:/person";
     }
 
+    // cancel an Address under modification of the selected person >> only clear modification flag
     @GetMapping("/addresses/cancel/{id}")
     public String cancelAddress(@PathVariable("id") Long id) {
         modifiedAddressId = 0L;     // maybe it was a cancel... clear id of address under modification after new...
@@ -224,7 +214,7 @@ public class PersonController {
 
     // -- NEW PERSON FORM --
 
-    // only for creating a new Person - but all addresses and their contacts will be created on the Person page...
+    // only for creating a new Person - but all addresses and their contacts will be created after this action on the Person page...
     @GetMapping("/new-person")
     public String newPerson(Model model) {
         newPerson = new Person();
@@ -232,7 +222,7 @@ public class PersonController {
         return "newperson";
     }
 
-    // save new person, then go to Person page with 1 created Address to fill out...
+    // save new person, then go to Person page with 1 created Address to be filled out...
     @PostMapping("/new-person/save")
     public String savePerson(@ModelAttribute("person") Person person){
         shownPersonId = personService.save(person).getId();
