@@ -21,15 +21,15 @@
                 <article class="persons-table" th:object="${errorDetails}">
                     <h2>Unfortunately an exception was thrown...</h2>
                     <div>
-                        <span>When?:</span>
+                        <span>When? - </span>
                         <span th:text="*{time}"></span>
                     </div>
                     <div>
-                        <span>What?:</span>
+                        <span>What? - </span>
                         <span th:text="*{message}"></span>
                     </div>
                     <div>
-                        <span>Request?:</span>
+                        <span>Request? - </span>
                         <span th:text="*{description}"></span>
                     </div>
 

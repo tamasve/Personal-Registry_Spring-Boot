@@ -128,9 +128,9 @@ h2 {
 .row {
     flex: 1;
     text-align: center;
-    border: 1px solid #d0d;
+    border: 1px solid rgb(24, 175, 4);
     border-radius: 1em;
-    background-color: #fdf;
+    background-color: rgb(255, 255, 221);
     display: grid;
     grid-template-columns: 0.3fr 1.7fr 2fr 1fr 1fr;
     padding: 0.5em;
