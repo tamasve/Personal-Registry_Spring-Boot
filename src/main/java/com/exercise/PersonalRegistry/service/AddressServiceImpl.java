@@ -26,13 +26,13 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
-    public List<Address> findByPersonId(Long id) {
-        return addressRepository.findByPersonId(id);
+    public List<Address> findAllByPersonId(Long id) {
+        return addressRepository.findAllByPersonId(id);
     }
 
     @Override
     public void deleteAllByPersonId(Long id) {
-        for (Address address : findByPersonId(id)) {
+        for (Address address : findAllByPersonId(id)) {
             contactService.deleteAllByAddressId( address.getId() );
             addressRepository.delete(address);
         }

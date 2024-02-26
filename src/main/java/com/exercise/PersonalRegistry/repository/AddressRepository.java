@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface AddressRepository extends ListCrudRepository<Address, Long> {
 
-    List<Address> findByPersonId(Long id);
+    List<Address> findAllByPersonId(Long id);
     void deleteAllByPersonId(Long id);
 
 }
