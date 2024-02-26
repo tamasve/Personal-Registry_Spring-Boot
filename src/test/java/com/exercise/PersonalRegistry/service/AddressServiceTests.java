@@ -103,18 +103,18 @@ public class AddressServiceTests {
     }
 
     @Test
-    public void AddressService_findByPersonId_ReturnAddressList() {
+    public void AddressService_findAllByPersonId_ReturnAddressList() {
 
-        when( addressRepository.findByPersonId(anyLong()) ).thenReturn(addressesOfPerson1);
+        when( addressRepository.findAllByPersonId(anyLong()) ).thenReturn(addressesOfPerson1);
 
-        List<Address> foundAddresses = addressService.findByPersonId( person1.getId() );
+        List<Address> foundAddresses = addressService.findAllByPersonId( person1.getId() );
 
         assertThat(foundAddresses).isNotNull();
         assertThat(foundAddresses.size()).isEqualTo(addressesOfPerson1.size());
         assertThat(foundAddresses.get(0).getCity()).isEqualTo(addressesOfPerson1.get(0).getCity());
         assertThat( foundAddresses.get(1).getAddressType().getValue() ).isEqualTo( addressesOfPerson1.get(1).getAddressType().getValue() );
 
-        verify(addressRepository).findByPersonId(anyLong());
+        verify(addressRepository).findAllByPersonId(anyLong());
     }
 
     @Test
@@ -132,13 +132,13 @@ public class AddressServiceTests {
     @Test
     public void AddressService_deleteAllByPersonId_ReturnVoid() {
 
-        when( addressRepository.findByPersonId(anyLong()) ).thenReturn(addressesOfPerson1);
+        when( addressRepository.findAllByPersonId(anyLong()) ).thenReturn(addressesOfPerson1);
         doNothing().when( contactService ).deleteAllByAddressId( anyLong() );
         doNothing().when( addressRepository ).delete( any(Address.class) );
 
         assertAll( () -> addressService.deleteAllByPersonId( address1.getId() ) );
 
-        verify( addressRepository ).findByPersonId( anyLong() );
+        verify( addressRepository ).findAllByPersonId( anyLong() );
         verify( contactService, times(2) ).deleteAllByAddressId( anyLong() );       // max 2 addresses can exist for a person
         verify( addressRepository, times(2) ).delete( any(Address.class) );
     }
@@ -158,7 +158,10 @@ public class AddressServiceTests {
 
         when( addressRepository.save(any(Address.class)) ).thenReturn(address1);
 
-        assertEquals(address1, addressService.save(address1));
+        Address savedAddress = addressService.save(address1);
+
+        assertThat(savedAddress).isNotNull();
+        assertThat(savedAddress).isEqualTo(address1);
 
         verify( addressRepository ).save( any(Address.class) );
     }

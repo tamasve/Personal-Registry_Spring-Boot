@@ -199,7 +199,7 @@ public class AddressRepositoryTests {
         assertThat(savedAddress2).isNotNull();
         assertThat(savedAddress3).isNotNull();
 
-        List<Address> addresses = addressRepository.findByPersonId( person1.getId() );
+        List<Address> addresses = addressRepository.findAllByPersonId( person1.getId() );
         assertThat(addresses).isNotNull();
         assertThat(addresses.size()).isEqualTo(2);
         assertThat(addresses.get(0).getCity()).isEqualTo(savedAddress1.getCity());
