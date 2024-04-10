@@ -26,10 +26,9 @@ public class PersonController {
     // flag for new / modified items >> "cancel" can mean cancel or delete
     String cancel;
 
-    // for filling out the form of a new Person with all  addresses and their contacts
+    // for filling out the form of a new Person
     private Person newPerson;
-    private List<Address> newAddresses;
-    private List<Contact> newContacts1, newContacts2;
+
 
     // DI for all service classes
     PersonService personService;
@@ -116,7 +115,11 @@ public class PersonController {
     // save a new bianco Contact with the 1st type into DB then offer it for modification
     @GetMapping("persons/{personId}/addresses/{addressId}/contacts/new")
     public  String newContactForAddress(@PathVariable("personId") Long personId, @PathVariable("addressId") Long addressId, Model model) {
-        modifiedContactId = contactService.save( new Contact( addressService.findById(addressId), contactTypeService.first(), " ") ).getId();
+        modifiedContactId = contactService.save(
+                new Contact( addressService.findById(addressId),
+                                            contactTypeService.first(),
+                            " ")
+            ).getId();
         shownPersonId = personId;
         cancel = "delete";
         return "redirect:/person";
@@ -140,7 +143,7 @@ public class PersonController {
     @GetMapping("/contacts/modify/{id}")
     public String modifyContact(@PathVariable("id") Long id) {
         if (modifiedAddressId == 0L && modifiedContactId == 0L)  modifiedContactId = id;       // only 1 new or modified item at the same time
-        cancel = "cancel";
+        cancel = "cancel";          // to cancel modification, not delete
         return "redirect:/person";
     }
 
@@ -171,7 +174,14 @@ public class PersonController {
         Long addressTypeId = addresses.get(0).getAddressType().getId();
         addressTypeId = addressTypeId == 1L ? 2L : 1L;          // only 2 types possible
 
-        modifiedAddressId = addressService.save( new Address( person, addressTypeService.findById(addressTypeId), 0, "", "", 0) ).getId();
+        modifiedAddressId = addressService.save(
+                new Address( person,
+                                            addressTypeService.findById(addressTypeId),
+                        0,
+                                    "",
+                                "",
+                            0)
+        ).getId();
 
         cancel = "delete";      // this is a new Address >> cancel means delete
         return "redirect:/person";
@@ -180,11 +190,16 @@ public class PersonController {
     // coming back from the page with the new Address object filled out >> save it into DB after data check
     @PostMapping("/addresses/new/save")
     public String saveNewAddress(@ModelAttribute("newAddress") Address newAddress) {
-        if (newAddress.getPostalCode() == 0 || newAddress.getCity().isEmpty() || newAddress.getPlace().isEmpty() || newAddress.getNumber() == 0)  return "redirect:/person";    // no value of address can be empty
+        // no part of an address can be empty
+        if (newAddress.getPostalCode() == 0 || newAddress.getCity().isEmpty() || newAddress.getPlace().isEmpty() || newAddress.getNumber() == 0)  return "redirect:/person";
         addressService.save(newAddress);
         modifiedAddressId = 0L;         // clear flag of new address
         if (cancel.equals("delete"))
-            modifiedContactId = contactService.save( new Contact( newAddress, contactTypeService.first(), " ") ).getId();   // aut.ly create a new contact for the new address
+            modifiedContactId = contactService.save(
+                    new Contact( newAddress,
+                                                contactTypeService.first(),
+                                    " ")
+            ).getId();   // aut.ly create a new contact for the new address
         return "redirect:/person";
     }
 
@@ -226,7 +241,14 @@ public class PersonController {
     @PostMapping("/new-person/save")
     public String savePerson(@ModelAttribute("person") Person person){
         shownPersonId = personService.save(person).getId();
-        modifiedAddressId = addressService.save( new Address( person, addressTypeService.findById(1L), 0, "", "", 0) ).getId();
+        modifiedAddressId = addressService.save(
+                new Address( person,
+                                            addressTypeService.findById(1L),
+                        0,
+                                    "",
+                                "",
+                            0)
+        ).getId();
         cancel = "delete";
         return "redirect:/person";
     }
